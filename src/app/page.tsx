@@ -2,16 +2,12 @@
 
 import { useState } from 'react';
 import { WorkoutPreferences, Exercise, Equipment } from '@/types/workout';
-import { 
-  Dumbbell, 
-  Timer, 
-  Activity, 
-  ChevronDown, 
+import {
+  Dumbbell,
+  Timer,
+  Activity,
+  ChevronDown,
   ChevronUp,
-  DumbbellIcon,
-  TimerIcon,
-  ActivityIcon,
-  Target,
   Info
 } from 'lucide-react';
 
@@ -226,21 +222,21 @@ export default function Home() {
                         <div className="grid grid-cols-3 gap-4 mb-4">
                           <div className="bg-indigo-50 dark:bg-indigo-900/20 rounded-lg p-4">
                             <div className="flex items-center space-x-2 mb-1">
-                              <ActivityIcon className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
+                              <Activity className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
                               <p className="text-sm font-medium text-indigo-600 dark:text-indigo-400">Sets</p>
                             </div>
                             <p className="text-xl font-bold text-gray-900 dark:text-white">{exercise.sets}</p>
                           </div>
                           <div className="bg-indigo-50 dark:bg-indigo-900/20 rounded-lg p-4">
                             <div className="flex items-center space-x-2 mb-1">
-                              <DumbbellIcon className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
+                              <Dumbbell className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
                               <p className="text-sm font-medium text-indigo-600 dark:text-indigo-400">Reps</p>
                             </div>
                             <p className="text-xl font-bold text-gray-900 dark:text-white">{exercise.reps}</p>
                           </div>
                           <div className="bg-indigo-50 dark:bg-indigo-900/20 rounded-lg p-4">
                             <div className="flex items-center space-x-2 mb-1">
-                              <TimerIcon className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
+                              <Timer className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
                               <p className="text-sm font-medium text-indigo-600 dark:text-indigo-400">Rest</p>
                             </div>
                             <p className="text-xl font-bold text-gray-900 dark:text-white">{exercise.rest}</p>
