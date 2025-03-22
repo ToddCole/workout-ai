@@ -2,6 +2,18 @@
 
 import { useState } from 'react';
 import { WorkoutPreferences, Exercise, Equipment } from '@/types/workout';
+import { 
+  Dumbbell, 
+  Timer, 
+  Activity, 
+  ChevronDown, 
+  ChevronUp,
+  DumbbellIcon,
+  TimerIcon,
+  ActivityIcon,
+  Target,
+  Info
+} from 'lucide-react';
 
 export default function Home() {
   const [isGenerating, setIsGenerating] = useState(false);
@@ -180,35 +192,73 @@ export default function Home() {
 
         {workout.length > 0 && (
           <div className="mt-12 space-y-8">
-            <h2 className="text-3xl font-bold text-gray-900 dark:text-white text-center">Your Workout</h2>
+            <div className="text-center">
+              <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Your Workout</h2>
+              <p className="text-gray-600 dark:text-gray-300">Click on any exercise to see more details</p>
+            </div>
             <div className="grid gap-6 md:grid-cols-2">
-              {workout.map((exercise, index) => (
-                <div 
-                  key={index} 
-                  className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-xl shadow-lg p-6 hover:shadow-xl transition-all duration-200 border border-gray-100 dark:border-gray-700"
-                >
-                  <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">{exercise.name}</h3>
-                  <div className="grid grid-cols-3 gap-4">
-                    <div className="bg-indigo-50 dark:bg-indigo-900/20 rounded-lg p-4">
-                      <p className="text-sm font-medium text-indigo-600 dark:text-indigo-400">Sets</p>
-                      <p className="text-xl font-bold text-gray-900 dark:text-white mt-1">{exercise.sets}</p>
-                    </div>
-                    <div className="bg-indigo-50 dark:bg-indigo-900/20 rounded-lg p-4">
-                      <p className="text-sm font-medium text-indigo-600 dark:text-indigo-400">Reps</p>
-                      <p className="text-xl font-bold text-gray-900 dark:text-white mt-1">{exercise.reps}</p>
-                    </div>
-                    <div className="bg-indigo-50 dark:bg-indigo-900/20 rounded-lg p-4">
-                      <p className="text-sm font-medium text-indigo-600 dark:text-indigo-400">Rest</p>
-                      <p className="text-xl font-bold text-gray-900 dark:text-white mt-1">{exercise.rest}</p>
-                    </div>
+              {workout.map((exercise, index) => {
+                const [isExpanded, setIsExpanded] = useState(false);
+                return (
+                  <div 
+                    key={index} 
+                    className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 border border-gray-100 dark:border-gray-700 overflow-hidden"
+                  >
+                    <button
+                      onClick={() => setIsExpanded(!isExpanded)}
+                      className="w-full p-6 flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
+                    >
+                      <div className="flex items-center space-x-4">
+                        <div className="p-2 bg-indigo-100 dark:bg-indigo-900/30 rounded-lg">
+                          <Dumbbell className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />
+                        </div>
+                        <h3 className="text-xl font-bold text-gray-900 dark:text-white text-left">{exercise.name}</h3>
+                      </div>
+                      {isExpanded ? (
+                        <ChevronUp className="w-5 h-5 text-gray-500" />
+                      ) : (
+                        <ChevronDown className="w-5 h-5 text-gray-500" />
+                      )}
+                    </button>
+                    
+                    {isExpanded && (
+                      <div className="px-6 pb-6">
+                        <div className="grid grid-cols-3 gap-4 mb-4">
+                          <div className="bg-indigo-50 dark:bg-indigo-900/20 rounded-lg p-4">
+                            <div className="flex items-center space-x-2 mb-1">
+                              <ActivityIcon className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
+                              <p className="text-sm font-medium text-indigo-600 dark:text-indigo-400">Sets</p>
+                            </div>
+                            <p className="text-xl font-bold text-gray-900 dark:text-white">{exercise.sets}</p>
+                          </div>
+                          <div className="bg-indigo-50 dark:bg-indigo-900/20 rounded-lg p-4">
+                            <div className="flex items-center space-x-2 mb-1">
+                              <DumbbellIcon className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
+                              <p className="text-sm font-medium text-indigo-600 dark:text-indigo-400">Reps</p>
+                            </div>
+                            <p className="text-xl font-bold text-gray-900 dark:text-white">{exercise.reps}</p>
+                          </div>
+                          <div className="bg-indigo-50 dark:bg-indigo-900/20 rounded-lg p-4">
+                            <div className="flex items-center space-x-2 mb-1">
+                              <TimerIcon className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
+                              <p className="text-sm font-medium text-indigo-600 dark:text-indigo-400">Rest</p>
+                            </div>
+                            <p className="text-xl font-bold text-gray-900 dark:text-white">{exercise.rest}</p>
+                          </div>
+                        </div>
+                        {exercise.notes && (
+                          <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4">
+                            <div className="flex items-start space-x-2">
+                              <Info className="w-5 h-5 text-blue-600 dark:text-blue-400 mt-0.5" />
+                              <p className="text-sm text-blue-700 dark:text-blue-300">{exercise.notes}</p>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    )}
                   </div>
-                  {exercise.notes && (
-                    <p className="mt-4 text-sm text-gray-600 dark:text-gray-300 italic border-t border-gray-100 dark:border-gray-700 pt-4">
-                      {exercise.notes}
-                    </p>
-                  )}
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         )}
