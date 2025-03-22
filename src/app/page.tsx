@@ -4,6 +4,8 @@ import { useState } from 'react';
 import { WorkoutPreferences, Exercise, Equipment } from '@/types/workout';
 
 export default function Home() {
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [workout, setWorkout] = useState<Exercise[]>([]);
   const [preferences, setPreferences] = useState<WorkoutPreferences>({
     fitnessLevel: 'beginner',
     workoutType: 'strength',
@@ -11,14 +13,10 @@ export default function Home() {
     equipment: 'Bodyweight only',
     muscleFocus: '',
   });
-  const [workout, setWorkout] = useState<Exercise[]>([]);
-  const [isGenerating, setIsGenerating] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsGenerating(true);
-    setError(null);
 
     try {
       const response = await fetch('/api/generate-workout', {
@@ -29,21 +27,18 @@ export default function Home() {
         body: JSON.stringify(preferences),
       });
 
-      const data = await response.json();
-
       if (!response.ok) {
-        throw new Error(data.error || 'Failed to generate workout');
+        throw new Error('Failed to generate workout');
       }
 
-      if (!data.exercises || !Array.isArray(data.exercises)) {
-        throw new Error('Invalid workout data received');
+      const data = await response.json();
+      if (!Array.isArray(data.exercises)) {
+        throw new Error('Invalid response format');
       }
 
       setWorkout(data.exercises);
-    } catch (error) {
-      console.error('Error generating workout:', error);
-      setError(error instanceof Error ? error.message : 'Failed to generate workout');
-      
+    } catch (err) {
+      console.error('Error generating workout:', err);
       // Fallback to mock data
       const mockWorkout: Exercise[] = [
         {
@@ -149,7 +144,7 @@ export default function Home() {
                     <input
                       type="checkbox"
                       checked={preferences.equipment === item}
-                      onChange={(e) => setPreferences({ ...preferences, equipment: item as Equipment })}
+                      onChange={() => setPreferences({ ...preferences, equipment: item as Equipment })}
                       className="rounded border-gray-300 text-primary focus:ring-primary"
                     />
                     <span className="text-gray-700">{item}</span>
